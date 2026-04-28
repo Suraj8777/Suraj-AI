@@ -1,0 +1,48 @@
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Film, Clapperboard, Download, Loader2, Play, Volume2, Maximize } from 'lucide-react';
+
+const GENERATION_STEPS = [
+  "Analyzing story prompt...",
+  "Sourcing archival footage...",
+  "Generating deep-voice narration...",
+  "Composing tense background score...",
+  "Applying true-crime color grading...",
+  "Rendering final cut..."
+];
+
+export default function App() {
+  const [story, setStory] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [stepIndex, setStepIndex] = useState(0);
+  const [videoReady, setVideoReady] = useState(false);
+
+  useEffect(() => {
+    let progressInterval: NodeJS.Timeout;
+    let stepInterval: NodeJS.Timeout;
+
+    if (isGenerating) {
+      // Simulate progress bar 0 to 100 over ~10 seconds
+      progressInterval = setInterval(() => {
+        setProgress((prev) => {
+          if (prev >= 100) {
+            clearInterval(progressInterval);
+            return 100;
+          }
+          return prev + 0.5; // increments every 50ms = 10% per second
+        });
+      }, 50);
+
+      // Simulate changing steps based on time
+      stepInterval = setInterval(() => {
+        setStepIndex((prev) => {
+          if (prev >= GENERATION_STEPS.length - 1) {
+            clearInterval(stepInterval);
+            return prev;
+    
